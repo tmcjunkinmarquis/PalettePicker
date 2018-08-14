@@ -1,12 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Palette Picker</title>
+  <!-- <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+  <!-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
+  <link rel="stylesheet" type="text/css" href="./css/styles.css" />
+  <title>Palette Picker</title> 
 </head>
+
 <body>
-  
+  <div class="ui-container">
+    <div class="logo">Palette Picker</div>
+    <hr>
+
+    <div class="create-project">Create A Project
+      <form action="/create-project" method="post">
+        <div>
+          <label for="project-name">Name:</label>
+          <input type="text" value="Project Name" name="project_name">
+          <div class="button">
+            <button type="submit">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <hr>
+
+    <div class="add-palette">Add A Palette
+      <form action="/create-palette" method="post">
+        <div>
+          <label for="project-select">Choose the project, then name the palette:</label>
+
+          <select id="project-select">
+            <option value="">--Please choose a project--</option>
+            <option value="dog">Dog</option>
+          </select>
+          <input type="text" value="Palette Name" name="palette_name">
+          <div class="button">
+            <button type="submit">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <hr>
+
+    <div class="project-cards-container">
+      <div>
+        <h4>Project One</h4>
+        <div>Palette A</div>
+        <div>Palette B</div>
+      </div>
+
+      <hr>
+
+      <div>
+        <h4>Project Two</h4>
+        <div>Palette C</div>
+      </div>
+      
+      
+    </div>
+  </div>
+    
 </body>
 </html>
