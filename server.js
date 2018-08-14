@@ -22,6 +22,18 @@ app.locals.palettes = [
   { id: 'l3', project_id: 'p3', color_one: '#D73479', color_two: '#D73479', color_three: '#D73479', color_four: '#D73479', color_five: '#D73479' }
 ];
 
+app.get('/api/v1/projects', (request, response) => {
+  const projects = app.locals.projects;
+
+  response.json({ projects });
+});
+
+app.get('/api/v1/palettes', (request, response) => {
+  const palettes = app.locals.palettes;
+
+  response.json({ palettes });
+});
+
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
 });

@@ -30,6 +30,7 @@ h3 {
 .sample-palette {
   display: flex;
   flex-direction: row;
+  justify-content: space-evenly;
 }
 
 #circle-one {
