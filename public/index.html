@@ -13,10 +13,12 @@
     <div class="logo">Palette Picker</div>
     <hr>
 
-    <div class="create-project">Create A Project
-      <form action="/create-project" method="post">
+    <div class="create-project">
+      <h3>Create A Project</h3>
+      
+      <form >
         <div>
-          <label for="project-name">Name:</label>
+          <label class="label" for="project-name">Name:</label>
           <input type="text" value="Project Name" name="project_name">
           <div class="button">
             <button type="submit">Save</button>
@@ -26,8 +28,9 @@
     </div>
     <hr>
 
-    <div class="add-palette">Add A Palette
-      <form action="/create-palette" method="post">
+    <div class="add-palette">
+      <h3>Add A Palette</h3>
+      <form >
         <div>
           <label for="project-select">Choose the project, then name the palette:</label>
 
@@ -38,6 +41,13 @@
           <input type="text" value="Palette Name" name="palette_name">
           <div class="button">
             <button type="submit">Save</button>
+          </div>
+          <div class="sample-palette">
+            <div id="circle-one"></div>
+            <div id="circle-two"></div>
+            <div id="circle-three"></div>
+            <div id="circle-four"></div>
+            <div id="circle-five"></div>
           </div>
         </div>
       </form>

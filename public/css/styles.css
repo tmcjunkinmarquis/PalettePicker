@@ -1,4 +1,79 @@
+.ui-container {
+  background-color: #DDC4AA;
+  background: radial-gradient(#ddc4aa, #f1e5d9);
+}
+
 .logo {
-  color: #EB978C;
+  text-align: center;
+  color: #F9F2ED;
   font-size: 3em;
+}
+
+h3 {
+  text-align: left;
+}
+
+.create-project {
+  color: #f4c781;
+  background-color: #F9F2ED;
+  text-align: center;
+}
+
+
+
+.add-palette {
+  color: #f4c781;
+  background-color: #F9F2ED;
+  text-align: center;
+}
+
+.sample-palette {
+  display: flex;
+  flex-direction: row;
+}
+
+#circle-one {
+  width: 100px;
+  height: 100px;
+  background: red;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  align-self: auto;
+}
+
+#circle-two {
+  width: 100px;
+  height: 100px;
+  background: red;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+}
+
+#circle-three {
+  width: 100px;
+  height: 100px;
+  background: red;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+}
+
+#circle-four {
+  width: 100px;
+  height: 100px;
+  background: red;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+}
+
+#circle-five {
+  width: 100px;
+  height: 100px;
+  background: red;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
 }
