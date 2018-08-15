@@ -40,15 +40,16 @@
           </select>
           <input type="text" value="Palette Name" name="palette_name">
           <div class="button">
-            <button type="submit">Save</button>
+            <button id="palette-save-button"type="submit">Save</button>
           </div>
           <div class="sample-palette">
-            <div id="circle-one"></div>
-            <div id="circle-two"></div>
-            <div id="circle-three"></div>
-            <div id="circle-four"></div>
-            <div id="circle-five"></div>
+            <div class="circle" id="circle-0"></div>
+              <div class="circle" id="circle-1"></div>
+              <div class="circle" id="circle-2"></div>
+              <div class="circle" id="circle-3"></div>
+              <div class="circle" id="circle-4"></div>
           </div>
+          <button class="different-palette">Different Palette</button>
         </div>
       </form>
     </div>
@@ -71,6 +72,8 @@
       
     </div>
   </div>
-    
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
