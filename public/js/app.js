@@ -4,21 +4,21 @@ $(document).ready(function () {
   
   function getPalettes() {
     const myRequest = new Request('http://localhost:3000/api/v1/palettes', { method: 'GET'});
-    fetch(myRequest)
-    .then(response => {
-        if (response.status === 200) {
-          return response.json();
-        } else {
-          throw new Error('Something went wrong on api server!');
-        }
+    return fetch(myRequest)
+    .then(palettesResponse => {
+        return palettesResponse.json()
       })
-      .then(response => {
-        console.debug(response);
-        // ...
-      }).catch(error => {
+    
+      .catch(error => {
         console.error(error);
       });
+      
   }
+
+
+  // function displayPalettes (){
+  //  getPalettes()
+  // }
 
   function getProjects (){
     const myRequest = new Request('http://localhost:3000/api/v1/projects', { method: 'GET' });
@@ -30,10 +30,7 @@ $(document).ready(function () {
         throw new Error('Something went wrong on api server!');
       }
     })
-    .then(response => {
-      console.debug(response);
-      // ...
-    }).catch(error => {
+    .catch(error => {
       console.error(error);
     });
     return promise;
@@ -67,6 +64,15 @@ $(document).ready(function () {
     event.preventDefault();
     const projectName = $('.project-input').val();
     $('select').append(`<option value=${projectName}>${projectName}</option>`);
+  });
+
+  // function lockColor() {
+  //   const locked = 
+  // }
+
+  $('.lock-icon').on('click', ()=>{
+    console.log('how how how');
+    
   });
 
   

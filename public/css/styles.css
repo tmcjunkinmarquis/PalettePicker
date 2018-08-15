@@ -34,7 +34,11 @@ h3 {
   align-items: flex-start;
 }
 
-
+.lock-icon {
+  margin-top: 6vh;
+  height: 4vh;
+  width: 4vh;
+}
 
 #circle-0 {
   
