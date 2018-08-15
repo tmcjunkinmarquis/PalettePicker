@@ -41,10 +41,10 @@ $(document).ready(function () {
   
   let projectsData = getProjects()
   let projects = projectsData.then(function(result) {
-    console.log(result);
+    // console.log(result);
     ;
   });
-  console.log(projects);
+  // console.log(projects);
   
   let palettesData = getPalettes();
 
@@ -63,11 +63,13 @@ $(document).ready(function () {
 
   $('.different-palette').on('click', handleClick);
 
-  function saveProjectToOption() {
-    
-  }
+  $('.project-button').on('click',function(event){
+    event.preventDefault();
+    const projectName = $('.project-input').val();
+    $('select').append(`<option value=${projectName}>${projectName}</option>`);
+  });
 
-  $(saveProjectToOption);
+  
 
 });
  
