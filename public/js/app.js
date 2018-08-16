@@ -59,15 +59,10 @@ $(document).ready(function () {
       const color = makeRandomColors()
       $(this).css('background-color', color);
       $(this).children('.color-name').text(color)
-    });
-
-    
+    }); 
   }
 
   $('.different-palette').on('click', handleClick);
-
-
-  
 
   $('.project-button').on('click',function(event){
     event.preventDefault();
@@ -75,13 +70,14 @@ $(document).ready(function () {
     $('select').append(`<option value=${projectName}>${projectName}</option>`);
   });
 
-  // function lockColor() {
-  //   const locked = 
-  // }
+  function lockColor(circle, color) {
+    circle.toggleClass('is-stored');        
+  }
 
-  $('.lock-icon').on('click', ()=>{
-    console.log('how how how');
-    
+  $('.lock-icon').on('click', (event)=>{
+    const color = $(event.target).prev().text();
+    lockColor($(event.target).parent(), color);
+
   });
 
   

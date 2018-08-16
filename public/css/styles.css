@@ -40,8 +40,7 @@ h3 {
   width: 4vh;
 }
 
-#circle-0 {
-  
+#one {
   width: 100px;
   height: 100px;
   border: 2px solid lightgray;
@@ -51,7 +50,7 @@ h3 {
   
 }
 
-#circle-1 {
+#two {
   width: 100px;
   height: 100px;
   border: 2px solid lightgray;
@@ -61,7 +60,7 @@ h3 {
   
 }
 
-#circle-2 {
+#three {
   width: 100px;
   height: 100px;
   border: 2px solid lightgray;
@@ -71,7 +70,7 @@ h3 {
   
 }
 
-#circle-3 {
+#four {
   width: 100px;
   height: 100px;
   border: 2px solid lightgray;
@@ -81,7 +80,7 @@ h3 {
  
 }
 
-#circle-4 {
+#five {
   width: 100px;
   height: 100px;
   border: 2px solid lightgray;
