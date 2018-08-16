@@ -64,10 +64,44 @@ $(document).ready(function () {
 
   $('.different-palette').on('click', handleClick);
 
-  $('.project-button').on('click',function(event){
+  $('#project-save-button').on('click',function(event){
     event.preventDefault();
     const projectName = $('.project-input').val();
     $('select').append(`<option value=${projectName}>${projectName}</option>`);
+    $('.project-cards-container').prepend(`
+      <div class="project">
+      <h4>${projectName}</h4>
+      </div><hr>
+      `);
+
+
+  });
+
+  $('#palette-save-button').on('click', function (event) {
+    event.preventDefault();
+    //locate the project name
+    $('.project').each(function(){
+      console.log($('.project').children('h4').html());
+      
+      
+      // if ($('.project').children('h4').html()){
+
+      //  }
+      
+    })
+    //prepend paletteName inside 
+    
+      // $("li").each(function () {
+      //   $(this).addClass("foo");
+      // });
+
+    // const paletteName = $('.palette-input').val();
+    // $('.project-cards-container').prepend(`<div>
+    //     <h4>${projectName}</h4>
+    //     <div>${paletteName}</div>
+    //     <div></div>
+    //   </div>
+    // `);
   });
 
   function lockColor(circle, color) {
