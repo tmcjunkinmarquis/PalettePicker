@@ -48,17 +48,26 @@ $(document).ready(function () {
 
   function makeRandomColors() {
       var randomColor = "#000000".replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16); });
+      
+      
       return randomColor;
   }
 
   function handleClick(event) { 
     event.preventDefault();
-    return $('.circle').each(function () { 
-      $(this).css('background-color', makeRandomColors());
+    $('.circle').each(function () { 
+      const color = makeRandomColors()
+      $(this).css('background-color', color);
+      $(this).children('.color-name').text(color)
     });
+
+    
   }
 
   $('.different-palette').on('click', handleClick);
+
+
+  
 
   $('.project-button').on('click',function(event){
     event.preventDefault();
