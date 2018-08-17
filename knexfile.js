@@ -13,7 +13,7 @@ module.exports = {
     },
     useNullAsDefault: true
   }
-
+//FOR FRIDAY:
   // production: {
   //   client: 'postgresql',
   //   connection: {

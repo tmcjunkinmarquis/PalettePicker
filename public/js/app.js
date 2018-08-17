@@ -1,31 +1,23 @@
 $(document).ready(function () {
   
-
-  
   function getPalettes() {
     const myRequest = new Request('http://localhost:3000/api/v1/palettes', { method: 'GET'});
     return fetch(myRequest)
     .then(palettesResponse => {
-        return palettesResponse.json()
+        return palettesResponse.json();
       })
     
       .catch(error => {
         console.error(error);
       });
-      
   }
-
-
-  // function displayPalettes (){
-  //  getPalettes()
-  // }
 
   function getProjects (){
     const myRequest = new Request('http://localhost:3000/api/v1/projects', { method: 'GET' });
-    const promise = fetch(myRequest)
-    .then(response => {
-      if (response.status === 200) {
-        return response.json();
+    return fetch(myRequest)
+    .then(projectsResponse => {
+      if (projectsResponse.status === 200) {
+        return projectsResponse.json();
       } else {
         throw new Error('Something went wrong on api server!');
       }
@@ -33,23 +25,28 @@ $(document).ready(function () {
     .catch(error => {
       console.error(error);
     });
-    return promise;
   }
   
-  let projectsData = getProjects()
+  let projectsData = getProjects();
   let projects = projectsData.then(function(result) {
     // console.log(result);
-    ;
+    //put this result on the page
+    populateProjectsOnPageLoad(result);
   });
-  // console.log(projects);
+
+  function populateProjectsOnPageLoad(result) {
+    // console.log(result);
+    
+  }
   
   let palettesData = getPalettes();
-
+  let palettes = palettesData.then(function (result) {
+    // console.log(result);
+    //put this result on the page
+  });
 
   function makeRandomColors() {
       var randomColor = "#000000".replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16); });
-      
-      
       return randomColor;
   }
 
@@ -73,8 +70,6 @@ $(document).ready(function () {
       <h4>${projectName}</h4>
       </div><hr>
       `);
-
-
   });
 
   $('#palette-save-button').on('click', function (event) {
