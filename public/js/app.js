@@ -28,22 +28,56 @@ $(document).ready(function () {
   }
   
   let projectsData = getProjects();
-  let projects = projectsData.then(function(result) {
-    // console.log(result);
-    //put this result on the page
+  projectsData.then(function(result) {
     populateProjectsOnPageLoad(result);
   });
 
   function populateProjectsOnPageLoad(result) {
-    // console.log(result);
+
+    const dbLength = result.length;
+    for (let i = 0; i < dbLength; i++) {
+      const projectName = result[i].project_name;
+      $('.project-cards-container').prepend(`
+      <div class="project">
+      <h4>${projectName}</h4>
+      </div><hr>
+      `);
+    } 
+
+    function palettes() {
+      let palettesData = getPalettes();
+      return palettesData.then(function (palettesResult) {
+
+
+        for(let i=0; i<palettesResult.length; i++){
+          var palette = `<div>${palettesResult[i].palette_name}
+          </div>`;
+          
+          $('h4').each(function () {
+            console.log($(this).html(), palettesResult[i].project_id);
+            
+            console.log($(this).html() === palettesResult[i].project_id);
+  
+          });
+        } 
+
+      }); 
+    }
+
+   palettes(); 
+    
+    
+    
+  
+    
+    
+    
+    
+    
     
   }
   
-  let palettesData = getPalettes();
-  let palettes = palettesData.then(function (result) {
-    // console.log(result);
-    //put this result on the page
-  });
+  
 
   function makeRandomColors() {
       var randomColor = "#000000".replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16); });
