@@ -19,8 +19,6 @@ h3 {
   text-align: center;
 }
 
-
-
 .add-palette {
   color: #f4c781;
   background-color: #F9F2ED;
@@ -46,8 +44,7 @@ h3 {
   border: 2px solid lightgray;
   -moz-border-radius: 50px;
   -webkit-border-radius: 50px;
-  border-radius: 50px;
-  
+  border-radius: 50px;  
 }
 
 #two {
@@ -88,6 +85,72 @@ h3 {
   -webkit-border-radius: 50px;
   border-radius: 50px;
  
+}
+
+.palette-in-project {
+  font-size: .8em;
+  color: #DDC4AA;
+}
+
+#one-for-project {
+  width: 14px;
+  height: 14px;
+  border: .5px solid lightgray;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+  border-radius: 7px;
+}
+
+#two-for-project {
+  width: 14px;
+  height: 14px;
+  border: .5px solid lightgray;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+#three-for-project {
+  width: 14px;
+  height: 14px;
+  border: .5px solid lightgray;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+  border-radius: 7px;
+}
+
+#four-for-project {
+  width: 14px;
+  height: 14px;
+  border: .5px solid lightgray;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+  border-radius: 7px;
+}
+
+#five-for-project {
+  width: 14px;
+  height: 14px;
+  border: .5px solid lightgray;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+  border-radius: 7px;
+}
+
+.palette-in-project {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.palette-name-in-project {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.circle-for-project {
+  margin-left: 3px;
 }
 
 

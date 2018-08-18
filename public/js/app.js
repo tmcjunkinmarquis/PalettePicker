@@ -32,39 +32,64 @@ $(document).ready(function () {
     populateProjectsOnPageLoad(result);
   });
 
-  function populateProjectsOnPageLoad(result) {
+  function populateProjectsOnPageLoad(projects) {
 
-    const dbLength = result.length;
+    const dbLength = projects.length;
     for (let i = 0; i < dbLength; i++) {
-      const projectName = result[i].project_name;
+
+      
+
+      const projectName = projects[i].project_name;
       $('.project-cards-container').prepend(`
       <div class="project">
       <h4>${projectName}</h4>
       </div><hr>
       `);
+      palettes(projects[i])
     } 
 
-    function palettes() {
+    function palettes(project) {
       let palettesData = getPalettes();
+      // console.log(project.id);
+      
       return palettesData.then(function (palettesResult) {
-
-
         for(let i=0; i<palettesResult.length; i++){
+          // console.log(palettesResult[i].project_id);
           var palette = `<div>${palettesResult[i].palette_name}
           </div>`;
-          
           $('h4').each(function () {
-            console.log($(this).html(), palettesResult[i].project_id);
+            if ((palettesResult[i].project_id === project.id) && ($(this).html()===project.project_name)){
+              $(this).append(`<div class="palette-in-project">
+                <p class="palette-name-in-project">${palettesResult[i].palette_name}</p>
+              <div class="circle-for-project" id="one-for-project"></div>
+              <div class="circle-for-project" id="two-for-project"></div>
+              <div class="circle-for-project" id="three-for-project"></div>
+              <div class="circle-for-project" id="four-for-project"></div>
+              <div class="circle-for-project" id="five-for-project"></div>
+              </div>
+              
+
+              `);
+              colorsForLittleCircles(this, palettesResult[i]);
+            }
+              
+
             
-            console.log($(this).html() === palettesResult[i].project_id);
-  
           });
         } 
 
-      }); 
+      });
+      function colorsForLittleCircles (element, specificPalette){
+        console.log('howdy', element);
+        $(element).find('#one-for-project').css('background-color', specificPalette.color_one);
+        $(element).find('#two-for-project').css('background-color', specificPalette.color_two);
+        $(element).find('#three-for-project').css('background-color', specificPalette.color_three);
+        $(element).find('#four-for-project').css('background-color', specificPalette.color_four);
+        $(element).find('#five-for-project').css('background-color', specificPalette.color_five);
+      }
     }
 
-   palettes(); 
+  
     
     
     
@@ -117,20 +142,8 @@ $(document).ready(function () {
 
       //  }
       
-    })
-    //prepend paletteName inside 
+    });
     
-      // $("li").each(function () {
-      //   $(this).addClass("foo");
-      // });
-
-    // const paletteName = $('.palette-input').val();
-    // $('.project-cards-container').prepend(`<div>
-    //     <h4>${projectName}</h4>
-    //     <div>${paletteName}</div>
-    //     <div></div>
-    //   </div>
-    // `);
   });
 
   function lockColor(circle, color) {
