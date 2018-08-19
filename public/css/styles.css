@@ -104,10 +104,10 @@ h3 {
 #two-for-project {
   width: 14px;
   height: 14px;
-  border: .5px solid lightgray;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
+  /* border: .5px solid lightgray; */
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+  border-radius: 7px;
 }
 
 #three-for-project {

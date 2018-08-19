@@ -4,6 +4,8 @@ const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 const bodyParser = require('body-parser');
+const { body, validationResult } = require('express-validator/check');
+const { sanitizeBody } = require('express-validator/filter');
 
 app.use(bodyParser.json());
 
@@ -48,16 +50,10 @@ app.get('/api/v1/palettes', (request, response) => {
     });
 });
 
-app.post('/api/v1/projects', (request, response) => {
-  const project = request.body;
-
-  for (let requiredParameter of ['project_name']) {
-    if (!project[requiredParameter]) {
-      return response
-        .status(422)
-        .send({ error: `Expected format: { project_name: <String>}. You're missing a "${requiredParameter}" property.` });
-    }
-  }
+app.post('/api/v1/projects', (request, response)=>{
+  
+const project = request.body
+console.log(project);
 
   database('projects').insert(project, 'id')
     .then(project => {
@@ -75,7 +71,7 @@ app.post('/api/v1/palettes', (request, response) => {
     if (!palette[requiredParameter]) {
       return response
         .status(422)
-        .send({ error: `Expected format: { palette_name: <String>, project_id: <Number>, color_one: <String>, color_two: <String>, color_three: <String>, color_four: <String>, color_five: <String>}. You're missing a "${requiredParameter}" property.` });
+        .send(`Expected format: { palette_name: <String>, project_id: <Number>, color_one: <String>, color_two: <String>, color_three: <String>, color_four: <String>, color_five: <String>}. You're missing a "${requiredParameter}" property.`);
     }
   }
 

@@ -1,3 +1,5 @@
+
+
 $(document).ready(function () {
   
   function getPalettes() {
@@ -6,7 +8,6 @@ $(document).ready(function () {
     .then(palettesResponse => {
         return palettesResponse.json();
       })
-    
       .catch(error => {
         console.error(error);
       });
@@ -36,9 +37,6 @@ $(document).ready(function () {
 
     const dbLength = projects.length;
     for (let i = 0; i < dbLength; i++) {
-
-      
-
       const projectName = projects[i].project_name;
       $('.project-cards-container').prepend(`
       <div class="project">
@@ -50,7 +48,6 @@ $(document).ready(function () {
 
     function palettes(project) {
       let palettesData = getPalettes();
-      // console.log(project.id);
       
       return palettesData.then(function (palettesResult) {
         for(let i=0; i<palettesResult.length; i++){
@@ -67,58 +64,49 @@ $(document).ready(function () {
               <div class="circle-for-project" id="four-for-project"></div>
               <div class="circle-for-project" id="five-for-project"></div>
               </div>
-              
-
               `);
               colorsForLittleCircles(this, palettesResult[i]);
             }
-              
-
-            
           });
         } 
-
       });
       function colorsForLittleCircles (element, specificPalette){
-        console.log('howdy', element);
         $(element).find('#one-for-project').css('background-color', specificPalette.color_one);
         $(element).find('#two-for-project').css('background-color', specificPalette.color_two);
         $(element).find('#three-for-project').css('background-color', specificPalette.color_three);
         $(element).find('#four-for-project').css('background-color', specificPalette.color_four);
         $(element).find('#five-for-project').css('background-color', specificPalette.color_five);
       }
-    }
-
-  
-    
-    
-    
-  
-    
-    
-    
-    
-    
-    
+    }  
   }
-  
-  
+
+  function lockColor(circle, color) {
+    circle.toggleClass('is-stored');
+  }
+
+  $('.lock-icon').on('click', (event) => {
+    const color = $(event.target).prev().text();
+    lockColor($(event.target).parent(), color);
+  });
 
   function makeRandomColors() {
       var randomColor = "#000000".replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16); });
       return randomColor;
   }
 
-  function handleClick(event) { 
+  function handleDiffPalClick(event) { 
     event.preventDefault();
-    $('.circle').each(function () { 
-      const color = makeRandomColors()
+    $('.circle').each(function () {
+      if($(this).hasClass('is-stored')){
+        return; //skips and goes to next circle
+      }
+      const color = makeRandomColors();
       $(this).css('background-color', color);
       $(this).children('.color-name').text(color)
     }); 
   }
 
-  $('.different-palette').on('click', handleClick);
+  $('.different-palette').on('click', handleDiffPalClick);
 
   $('#project-save-button').on('click',function(event){
     event.preventDefault();
@@ -131,31 +119,46 @@ $(document).ready(function () {
       `);
   });
 
-  $('#palette-save-button').on('click', function (event) {
+  $('button[type="submit"]').click(function () {
+  //   // Before the request starts, show the 'Loading message...'
+  //   $('.result').text('File is being uploaded...');
     event.preventDefault();
-    //locate the project name
-    $('.project').each(function(){
-      console.log($('.project').children('h4').html());
-      
-      
-      // if ($('.project').children('h4').html()){
+    const projectName = $('.project-input').val();
+    const url = 'http://localhost:3000/api/v1/projects'
+    const optionsObj = {
+      method: 'POST',
+      headers: {"Content-Type": "application/json"},  
+      body: JSON.stringify({ project_name: projectName })
+    };
+    
+    return fetch(url, optionsObj)
+    
+      .then(projectsResponse => {
+        return projectsResponse.json();
+      })
+      .catch(error => {
+        $('.result').text('Whoops! There was an error in the request.');
+      });
+  });
 
-      //  }
-      
-    });
+  $('#palette-save-button[type="submit"]').on('click', function (event) {
+    event.preventDefault();
+    const paletteName = $('.palette-input').val();
+    const url = 'http://localhost:3000/api/v1/palettes'
+
+    const myRequest = new Request(url, { method: 'POST', body: { palette_name: paletteName } });
+    return fetch(myRequest)
+
+      .then(palettesResponse => {
+        return palettesResponse.json();
+      })
+      .catch(error => {
+        $('.result').text('Whoops! There was an error in the request.');
+      });
     
   });
 
-  function lockColor(circle, color) {
-    circle.toggleClass('is-stored');        
-  }
-
-  $('.lock-icon').on('click', (event)=>{
-    const color = $(event.target).prev().text();
-    lockColor($(event.target).parent(), color);
-
-  });
-
+  
   
 
 });

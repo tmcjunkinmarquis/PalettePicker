@@ -16,12 +16,13 @@
     <div class="create-project">
       <h3>Create A Project</h3>
       
-      <form >
+<form enctype="application/x-www-form-urlencoded" action="/api/v1/projects/" method="post">
         <div>
           <label class="label" for="project-name">Name:</label>
-          <input class="project-input" type="text" value="Project Name" name="project_name" />
+          <input class="project-input" type="text" placeholder="Project Name" name="project_name" />
           <div class="project-button">
-<button id="project-save-button" type="submit">Save</button>
+          <button id="project-save-button" type="submit">Save</button>
+          <div class="result"></div>
           </div>
         </div>
       </form>
@@ -33,12 +34,9 @@
       <form >
         <div>
           <label for="project-select">Choose the project, then name the palette:</label>
-
           <select id="project-select">
-            <option value="">--Please choose a project--</option>
-            <option value="dog">Dog</option>
           </select>
-          <input class="palette-input" type="text" value="Palette Name" name="palette_name">
+          <input class="palette-input" type="text" placeholder="Palette Name" name="palette_name">
           <!-- <div class="palette-button"> -->
             <button id="palette-save-button" type="submit">Save</button>
           <!-- </div> -->
