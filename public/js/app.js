@@ -43,6 +43,7 @@ $(document).ready(function () {
       <h4>${projectName}</h4>
       </div><hr>
       `);
+      $('select').append(`<option value=${projectName}>${projectName}</option>`);
       palettes(projects[i])
     } 
 
