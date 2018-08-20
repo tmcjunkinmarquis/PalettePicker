@@ -51,10 +51,7 @@ app.get('/api/v1/palettes', (request, response) => {
 });
 
 app.post('/api/v1/projects', (request, response)=>{
-  
-const project = request.body
-console.log(project);
-
+const project = request.body;
   database('projects').insert(project, 'id')
     .then(project => {
       response.status(201).json({ id: project[0] });
@@ -67,13 +64,13 @@ console.log(project);
 app.post('/api/v1/palettes', (request, response) => {
   const palette = request.body;
 
-  for (let requiredParameter of ['palette_name', 'project_id', 'color_one', 'color_two', 'color_three', 'color_four', 'color_five']) {
-    if (!palette[requiredParameter]) {
-      return response
-        .status(422)
-        .send(`Expected format: { palette_name: <String>, project_id: <Number>, color_one: <String>, color_two: <String>, color_three: <String>, color_four: <String>, color_five: <String>}. You're missing a "${requiredParameter}" property.`);
-    }
-  }
+  // for (let requiredParameter of ['palette_name', 'project_id', 'color_one', 'color_two', 'color_three', 'color_four', 'color_five']) {
+  //   if (!palette[requiredParameter]) {
+  //     return response
+  //       .status(422)
+  //       .send(`Expected format: { palette_name: <String>, project_id: <Number>, color_one: <String>, color_two: <String>, color_three: <String>, color_four: <String>, color_five: <String>}. You're missing a "${requiredParameter}" property.`);
+  //   }
+  // }
 
   database('palettes').insert(palette, 'id')
     .then(palette => {

@@ -38,25 +38,23 @@ $(document).ready(function () {
     const dbLength = projects.length;
     for (let i = 0; i < dbLength; i++) {
       const projectName = projects[i].project_name;
+      const projectId = projects[i].project_id;
       $('.project-cards-container').prepend(`
       <div class="project">
-      <h4>${projectName}</h4>
+      <h4 class=${projectId}>${projectName}</h4>
       </div><hr>
       `);
-      $('select').append(`<option value=${projectName}>${projectName}</option>`);
-      palettes(projects[i])
+      $('select').append(`<option data-projectId=${projectId} value=${projectName}>${projectName}</option>`);
+      putPalettesOnProject(projects[i])
     } 
 
-    function palettes(project) {
+    function putPalettesOnProject(project) {
       let palettesData = getPalettes();
       
       return palettesData.then(function (palettesResult) {
         for(let i=0; i<palettesResult.length; i++){
-          // console.log(palettesResult[i].project_id);
-          var palette = `<div>${palettesResult[i].palette_name}
-          </div>`;
           $('h4').each(function () {
-            if ((palettesResult[i].project_id === project.id) && ($(this).html()===project.project_name)){
+            if ((palettesResult[i].project_id === project.id)){
               $(this).append(`<div class="palette-in-project">
                 <p class="palette-name-in-project">${palettesResult[i].palette_name}</p>
               <div class="circle-for-project" id="one-for-project"></div>
@@ -109,16 +107,34 @@ $(document).ready(function () {
 
   $('.different-palette').on('click', handleDiffPalClick);
 
-  $('#project-save-button').on('click',function(event){
-    event.preventDefault();
-    const projectName = $('.project-input').val();
-    $('select').append(`<option value=${projectName}>${projectName}</option>`);
+  // $('#project-save-button').on('click',function(event){
+  //   event.preventDefault();
+  //   const projectName = $('.project-input').val();
+
+  //   $('select').append(`<option >${projectName}</option>`);
+    // $('.project-cards-container').prepend(`
+    //   <div class="project">
+    //   <h4>${projectName}</h4>
+    //   </div><hr>
+    //   `);
+  // });
+
+  function putProjectIdOnOption (response, projectName){
+    $('select').append(`<option selected="selected" value=${response.id}>${projectName}</option>`);
+    putProjectInContainer(projectName);
+    console.log('in option','hope');
+    
+  }
+
+  function putProjectInContainer (projectName) {
     $('.project-cards-container').prepend(`
       <div class="project">
       <h4>${projectName}</h4>
       </div><hr>
       `);
-  });
+      console.log('incontainer','howdy');
+      
+  }
 
   $('button[type="submit"]').click(function () {
   //   // Before the request starts, show the 'Loading message...'
@@ -133,9 +149,11 @@ $(document).ready(function () {
     };
     
     return fetch(url, optionsObj)
-    
       .then(projectsResponse => {
         return projectsResponse.json();
+      })
+      .then((projectsResponse)=>{
+        putProjectIdOnOption(projectsResponse, projectName);
       })
       .catch(error => {
         $('.result').text('Whoops! There was an error in the request.');
@@ -145,11 +163,32 @@ $(document).ready(function () {
   $('#palette-save-button[type="submit"]').on('click', function (event) {
     event.preventDefault();
     const paletteName = $('.palette-input').val();
+    const projectNumber = $('#project-select option:selected');
+    console.log(projectNumber);
+    
+    const colorOne = $('#one').next().text();
+    const colorTwo = $('#two').next().text();
+    const colorThree = $('#three').next().text();
+    const colorFour = $('#four').next().text();
+    const colorFive = $('#five').next().text();
     const url = 'http://localhost:3000/api/v1/palettes'
-
-    const myRequest = new Request(url, { method: 'POST', body: { palette_name: paletteName } });
-    return fetch(myRequest)
-
+    const optionsObj = {
+      method: 'POST',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(
+        { 
+          palette_name: paletteName,
+          projecte_id: projectNumber,
+          color_one: colorOne,
+          color_two: colorTwo,
+          color_three: colorThree,
+          color_four: colorFour,
+          color_five: colorFive
+         }
+      )
+    };
+    
+    return fetch(url, optionsObj)
       .then(palettesResponse => {
         return palettesResponse.json();
       })
