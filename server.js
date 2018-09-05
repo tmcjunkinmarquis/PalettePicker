@@ -92,7 +92,7 @@ app.delete('/api/v1/palettes/:id', (request, response) => {
   database('palettes')
     .where('id', id)
     .del()
-    .then(() => {
+    .then((deleted) => {
       if (deleted > 0) {
         response.status(200).json({ Success: `Item ${id} deleted` });
       } else {
