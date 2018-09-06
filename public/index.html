@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <!-- <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
-  <!-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" type="text/css" href="./css/styles.css" />
-  <title>Palette Picker</title> 
+  <title>Palette Picker</title>
 </head>
 
 <body>
@@ -15,14 +16,14 @@
 
     <div class="create-project">
       <h3>Create A Project</h3>
-      
-<form enctype="application/x-www-form-urlencoded" action="/api/v1/projects/" method="post">
+
+      <form>
         <div>
           <label class="label" for="project-name">Name:</label>
           <input class="project-input" type="text" placeholder="Project Name" name="project_name" />
           <div class="project-button">
-          <button id="project-save-button" type="submit">Save</button>
-          <div class="result"></div>
+            <button id="project-save-button" type="submit">Save</button>
+            <div class="result"></div>
           </div>
         </div>
       </form>
@@ -31,35 +32,33 @@
 
     <div class="add-palette">
       <h3>Add A Palette</h3>
-      <form >
+      <form>
         <div>
           <label for="project-select">Choose the project, then name the palette:</label>
           <select id="project-select">
           </select>
           <input class="palette-input" type="text" placeholder="Palette Name" name="palette_name">
-          <!-- <div class="palette-button"> -->
-            <button id="palette-save-button" type="submit">Save</button>
-          <!-- </div> -->
+          <button id="palette-save-button" type="submit">Save</button>
           <div class="sample-palette">
             <div class="circle" id="one">
               <p class="color-name"></p>
-              <img class="lock-icon" src="images/locked.svg" alt="image" />
+              <img class="lock-icon" src="images/unlocked.svg" alt="image" />
             </div>
             <div class="circle" id="two">
               <p class="color-name"></p>
-              <img class="lock-icon" src="images/locked.svg" alt="image" />
+              <img class="lock-icon" src="images/unlocked.svg" alt="image" />
             </div>
             <div class="circle" id="three">
               <p class="color-name"></p>
-              <img class="lock-icon" src="images/locked.svg" alt="image" />
+              <img class="lock-icon" src="images/unlocked.svg" alt="image" />
             </div>
             <div class="circle" id="four">
               <p class="color-name"></p>
-              <img class="lock-icon" src="images/locked.svg" alt="image" />
+              <img class="lock-icon" src="images/unlocked.svg" alt="image" />
             </div>
             <div class="circle" id="five">
               <p class="color-name"></p>
-              <img class="lock-icon" src="images/locked.svg" alt="image" />
+              <img class="lock-icon" src="images/unlocked.svg" alt="image" />
             </div>
           </div>
           <button class="different-palette">Different Palette</button>
@@ -69,24 +68,14 @@
     <hr>
 
     <div class="project-cards-container">
-      <!-- <div> -->
-        <!-- <h4>Project One</h4>
-        <div>Palette A</div>
-        <div>Palette B</div> -->
-      <!-- </div> -->
-
-      <!-- <hr> -->
-
-      <!-- <div> -->
-        <!-- <h4>Project Two</h4>
-        <div>Palette C</div> -->
-      <!-- </div> -->
-      
-      
+      <div class="saved-projects">
+      </div>
     </div>
+    
   </div>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
-    <script src="js/app.js"></script>
+    crossorigin="anonymous"></script>
+  <script src="js/app.js"></script>
 </body>
+
 </html>
