@@ -45,7 +45,7 @@ function populateProject(project) {
         <h4 class='project-name'>${project.project_name}</h4>
       </div><hr>
       `);
-  $('select').prepend(`<option selected="selected" data-projectId=${project.id} value=${project.project_name}>${project.project_name}</option>`)
+  $('select').prepend(`<option selected="selected" value=${project.id}>${project.project_name}</option>`)
 }
 
 function populatePalette(palette) {
@@ -107,15 +107,13 @@ const saveProject = async (event) => {
       const project = { ...id, project_name: projectName }
       populateProject(project);
       $('.project-input').val('');
-      return project;
+      return id;
     } catch (error) {
       throw Error(`Your request failed. (error: ${error.message})`);
     }
   }
   alert("Please provide a unique name");
 }
-
-$('#project-save-button').on('click', saveProject)
 
 // function putProjectIdOnOption(response, projectName) {
 //   $('select').append(`<option selected="selected" value=${response.id}>${projectName}</option>`);
@@ -130,46 +128,67 @@ $('#project-save-button').on('click', saveProject)
 //       `);
 // }
 
+const savePalette = async (event) => {
+  event.preventDefault();
+  const paletteName = $('.palette-input').val();
+  const projectNumber = $('#project-select option:selected').val();
+  const colorOne = $('#one').text();
+  const colorTwo = $('#two').text();
+  const colorThree = $('#three').text();
+  const colorFour = $('#four').text();
+  const colorFive = $('#five').text();
+  const savedPalettes = await getPalettes();
 
-// $('#palette-save-button[type="submit"]').on('click', function (event) {
-//   event.preventDefault();
-//   const paletteName = $('.palette-input').val();
-//   const projectNumber = $('#project-select option:selected');
+  const paletteExists = savedPalettes.some(palette => {
+    return palette.palette_name === paletteName;
+  });
 
+  if (!paletteExists && paletteName.length) {
+    try {
+      const url = 'http://localhost:3000/api/v1/palettes'
+      const optionsObj = {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(
+          {
+            palette_name: paletteName,
+            project_id: projectNumber,
+            color_one: colorOne,
+            color_two: colorTwo,
+            color_three: colorThree,
+            color_four: colorFour,
+            color_five: colorFive
+          })
+      }
+      const paletteResponse = await fetch(url, optionsObj)
+      if (response.status !== 201) {
+        throw Error(`${response.status}`);
+      }
+      const id = await paletteResponse.json()
 
-//   const colorOne = $('#one').next().text();
-//   const colorTwo = $('#two').next().text();
-//   const colorThree = $('#three').next().text();
-//   const colorFour = $('#four').next().text();
-//   const colorFive = $('#five').next().text();
-//   const url = 'http://localhost:3000/api/v1/palettes'
-//   const optionsObj = {
-//     method: 'POST',
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify(
-//       {
-//         palette_name: paletteName,
-//         projecte_id: projectNumber,
-//         color_one: colorOne,
-//         color_two: colorTwo,
-//         color_three: colorThree,
-//         color_four: colorFour,
-//         color_five: colorFive
-//       }
-//     )
-//   };
+      const palette = {
+        ...id,
+        palette_name: paletteName,
+        color_one: colorOne,
+        color_two: colorTwo,
+        color_three: colorThree,
+        color_four: colorFour,
+        color_five: colorFive,
+        project_id: projectNumber
+      }
+      populatePalette(palette);
+      $('.palette-input').val('');
+      return id;
+    } catch (error) {
+      $('.result').text(`Your request failed. (error: ${error.message})`);
+    }
+  }
+  // alert("Please provide a unique name");
+}
 
-//   return fetch(url, optionsObj)
-//     .then(palettesResponse => {
-//       return palettesResponse.json();
-//     })
-//     .catch(error => {
-//       $('.result').text('Whoops! There was an error in the request.');
-//     });
-
-// });
-
-$('.lock-icon').on('click', lockColor)
+$('#palette-save-button').on('click', savePalette);
+$('#project-save-button').on('click', saveProject);
+$('.lock-icon').on('click', lockColor);
 $('.different-palette').click(handleDiffPalClick);
 
 $(document).ready(async () => {
