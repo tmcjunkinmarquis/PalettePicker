@@ -84,93 +84,90 @@ const handleDiffPalClick = () => {
   });
 }
 
-// $('#project-save-button').on('click',function(event){
-//   event.preventDefault();
-//   const projectName = $('.project-input').val();
-
-//   $('select').append(`< option > ${ projectName }</option > `);
-// $('.project-cards-container').prepend(`
-//   <div class="project">
-//   <h4>${projectName}</h4>
-//   </div><hr>
-//   `);
-// });
-
-function putProjectIdOnOption(response, projectName) {
-  $('select').append(`<option selected="selected" value=${response.id}>${projectName}</option>`);
-  putProjectInContainer(projectName);
-
-}
-
-function putProjectInContainer(projectName) {
-  $('.project-cards-container').prepend(`
-      <div class="project">
-      <h4>${projectName}</h4>
-      </div><hr>
-      `);
-}
-
-$('button[type="submit"]').click(function () {
-  //   // Before the request starts, show the 'Loading message...'
-  //   $('.result').text('File is being uploaded...');
+const saveProject = async (event) => {
   event.preventDefault();
   const projectName = $('.project-input').val();
-  const url = 'http://localhost:3000/api/v1/projects'
-  const optionsObj = {
-    method: 'POST',
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ project_name: projectName })
-  };
+  const savedProjects = await getProjects();
+  const projectExists = savedProjects.some(project => {
+    return project.project_name === projectName;
+  });
 
-  return fetch(url, optionsObj)
-    .then(projectsResponse => {
-      return projectsResponse.json();
-    })
-    .then((projectsResponse) => {
-      putProjectIdOnOption(projectsResponse, projectName);
-    })
-    .catch(error => {
-      $('.result').text('Whoops! There was an error in the request.');
-    });
-});
-
-$('#palette-save-button[type="submit"]').on('click', function (event) {
-  event.preventDefault();
-  const paletteName = $('.palette-input').val();
-  const projectNumber = $('#project-select option:selected');
- 
-
-  const colorOne = $('#one').next().text();
-  const colorTwo = $('#two').next().text();
-  const colorThree = $('#three').next().text();
-  const colorFour = $('#four').next().text();
-  const colorFive = $('#five').next().text();
-  const url = 'http://localhost:3000/api/v1/palettes'
-  const optionsObj = {
-    method: 'POST',
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(
-      {
-        palette_name: paletteName,
-        projecte_id: projectNumber,
-        color_one: colorOne,
-        color_two: colorTwo,
-        color_three: colorThree,
-        color_four: colorFour,
-        color_five: colorFive
+  if (!projectExists && projectName.length) {
+    try {
+      const optionsObj = {
+        method: 'POST',
+        body: JSON.stringify({ project_name: projectName }),
+        headers: { 'Content-Type': 'application/json' }
+      };
+      const response = await fetch('/api/v1/projects', optionsObj);
+      if (response.status !== 201) {
+        throw Error(`${response.status}`);
       }
-    )
-  };
+      const id = await response.json();
+      const project = { ...id, project_name: projectName }
+      populateProject(project);
+      $('.project-input').val('');
+      return project;
+    } catch (error) {
+      throw Error(`Your request failed. (error: ${error.message})`);
+    }
+  }
+  alert("Please provide a unique name");
+}
 
-  return fetch(url, optionsObj)
-    .then(palettesResponse => {
-      return palettesResponse.json();
-    })
-    .catch(error => {
-      $('.result').text('Whoops! There was an error in the request.');
-    });
+$('#project-save-button').on('click', saveProject)
 
-});
+// function putProjectIdOnOption(response, projectName) {
+//   $('select').append(`<option selected="selected" value=${response.id}>${projectName}</option>`);
+//   putProjectInContainer(projectName);
+// }
+
+// function putProjectInContainer(projectName) {
+//   $('.project-cards-container').prepend(`
+//       <div class="project">
+//       <h4>${projectName}</h4>
+//       </div><hr>
+//       `);
+// }
+
+
+// $('#palette-save-button[type="submit"]').on('click', function (event) {
+//   event.preventDefault();
+//   const paletteName = $('.palette-input').val();
+//   const projectNumber = $('#project-select option:selected');
+
+
+//   const colorOne = $('#one').next().text();
+//   const colorTwo = $('#two').next().text();
+//   const colorThree = $('#three').next().text();
+//   const colorFour = $('#four').next().text();
+//   const colorFive = $('#five').next().text();
+//   const url = 'http://localhost:3000/api/v1/palettes'
+//   const optionsObj = {
+//     method: 'POST',
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify(
+//       {
+//         palette_name: paletteName,
+//         projecte_id: projectNumber,
+//         color_one: colorOne,
+//         color_two: colorTwo,
+//         color_three: colorThree,
+//         color_four: colorFour,
+//         color_five: colorFive
+//       }
+//     )
+//   };
+
+//   return fetch(url, optionsObj)
+//     .then(palettesResponse => {
+//       return palettesResponse.json();
+//     })
+//     .catch(error => {
+//       $('.result').text('Whoops! There was an error in the request.');
+//     });
+
+// });
 
 $('.lock-icon').on('click', lockColor)
 $('.different-palette').click(handleDiffPalClick);
