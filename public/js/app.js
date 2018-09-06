@@ -45,7 +45,7 @@ function populateProject(project) {
         <h4 class='project-name'>${project.project_name}</h4>
       </div><hr>
       `);
-  $('select').append(`<option data-projectId=${project.id} value=${project.project_name}>${project.project_name}</option>`)
+  $('select').prepend(`<option selected="selected" data-projectId=${project.id} value=${project.project_name}>${project.project_name}</option>`)
 }
 
 function populatePalette(palette) {
