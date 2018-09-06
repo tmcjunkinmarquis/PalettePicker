@@ -1,205 +1,200 @@
 
-
-$(document).ready(function () {
-  
-  function getPalettes() {
-    const myRequest = new Request('http://localhost:3000/api/v1/palettes', { method: 'GET'});
-    return fetch(myRequest)
-    .then(palettesResponse => {
-        return palettesResponse.json();
-      })
-      .catch(error => {
-        console.error(error);
-      });
+const getPalettes = async () => {
+  try {
+    const palettesResponse = await fetch('http://localhost:3000/api/v1/palettes');
+    if (palettesResponse.status === 200) {
+      return await palettesResponse.json();
+    } else {
+      throw Error('Something went wrong on api server!');
+    }
+  } catch (error) {
+    throw Error(`Your request failed. (error: ${error.message})`);
   }
+}
 
-  function getProjects (){
-    const myRequest = new Request('http://localhost:3000/api/v1/projects', { method: 'GET' });
-    return fetch(myRequest)
-    .then(projectsResponse => {
-      if (projectsResponse.status === 200) {
-        return projectsResponse.json();
-      } else {
-        throw new Error('Something went wrong on api server!');
-      }
-    })
-    .catch(error => {
-      console.error(error);
-    });
+const getProjects = async () => {
+  try {
+    const projectsResponse = await fetch('http://localhost:3000/api/v1/projects')
+    if (projectsResponse.status === 200) {
+      return await projectsResponse.json();
+    } else {
+      throw Error('Something went wrong on api server!');
+    }
+  } catch (error) {
+    throw Error(`Your request failed. (error: ${error.message})`);
   }
-  
-  let projectsData = getProjects();
-  projectsData.then(function(result) {
-    populateProjectsOnPageLoad(result);
+}
+
+const displayProjects = async () => {
+  let projectsData = await getProjects();
+  projectsData.forEach(project => {
+    populateProject(project);
   });
+}
 
-  function populateProjectsOnPageLoad(projects) {
+const displayPalettes = async () => {
+  let palettesData = await getPalettes();
+  palettesData.forEach(palette => {
+    populatePalette(palette);
+  });
+}
 
-    const dbLength = projects.length;
-    for (let i = 0; i < dbLength; i++) {
-      const projectName = projects[i].project_name;
-      const projectId = projects[i].project_id;
-      $('.project-cards-container').prepend(`
-      <div class="project">
-      <h4 class=${projectId}>${projectName}</h4>
+function populateProject(project) {
+  $('.saved-projects').prepend(`
+      <div class="project" id=project${project.id}>
+        <h4 class='project-name'>${project.project_name}</h4>
       </div><hr>
       `);
-      $('select').append(`<option data-projectId=${projectId} value=${projectName}>${projectName}</option>`);
-      putPalettesOnProject(projects[i])
-    } 
+  $('select').prepend(`<option selected="selected" value=${project.id}>${project.project_name}</option>`)
+}
 
-    function putPalettesOnProject(project) {
-      let palettesData = getPalettes();
-      
-      return palettesData.then(function (palettesResult) {
-        for(let i=0; i<palettesResult.length; i++){
-          $('h4').each(function () {
-            if ((palettesResult[i].project_id === project.id)){
-              $(this).append(`<div class="palette-in-project">
-                <p class="palette-name-in-project">${palettesResult[i].palette_name}</p>
-              <div class="circle-for-project" id="one-for-project"></div>
-              <div class="circle-for-project" id="two-for-project"></div>
-              <div class="circle-for-project" id="three-for-project"></div>
-              <div class="circle-for-project" id="four-for-project"></div>
-              <div class="circle-for-project" id="five-for-project"></div>
-              </div>
-              `);
-              colorsForLittleCircles(this, palettesResult[i]);
-            }
-          });
-        } 
-      });
-      function colorsForLittleCircles (element, specificPalette){
-        $(element).find('#one-for-project').css('background-color', specificPalette.color_one);
-        $(element).find('#two-for-project').css('background-color', specificPalette.color_two);
-        $(element).find('#three-for-project').css('background-color', specificPalette.color_three);
-        $(element).find('#four-for-project').css('background-color', specificPalette.color_four);
-        $(element).find('#five-for-project').css('background-color', specificPalette.color_five);
+function populatePalette(palette) {
+  $(`#project${palette.project_id}`).append(`
+    <div class="palette-in-project">
+      <p class="palette-name-in-project">${palette.palette_name}</p>
+      <div class="circle-for-project" id="one-for-project" style='background-color:${palette.color_one}'></div>
+      <div class="circle-for-project" id="two-for-project" style='background-color:${palette.color_two}'></div>
+      <div class="circle-for-project" id="three-for-project" style='background-color:${palette.color_three}'></div>
+      <div class="circle-for-project" id="four-for-project" style='background-color:${palette.color_four}'></div>
+      <div class="circle-for-project" id="five-for-project" style='background-color:${palette.color_five}'></div>
+    </div>
+  `);
+};
+
+function lockColor(event) {
+  const circle = $(event.target).parent();
+  circle.toggleClass('is-stored');
+  circle.hasClass('is-stored')
+    ? (event.target.src = './images/locked.svg')
+    : (event.target.src = './images/unlocked.svg');
+}
+
+function makeRandomColors() {
+  const randomColor = "#000000".replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16); });
+  return randomColor;
+}
+
+const handleDiffPalClick = () => {
+  $('.circle').each((index, singleCircle) => {
+    const haveLockClass = singleCircle.classList.contains('is-stored');
+    if (!haveLockClass) {
+      $(singleCircle).css('background-color', makeRandomColors());
+      $(singleCircle).children('.color-name').text(makeRandomColors())
+    }
+  });
+}
+
+const saveProject = async (event) => {
+  event.preventDefault();
+  const projectName = $('.project-input').val();
+  const savedProjects = await getProjects();
+  const projectExists = savedProjects.some(project => {
+    return project.project_name === projectName;
+  });
+
+  if (!projectExists && projectName.length) {
+    try {
+      const optionsObj = {
+        method: 'POST',
+        body: JSON.stringify({ project_name: projectName }),
+        headers: { 'Content-Type': 'application/json' }
+      };
+      const response = await fetch('/api/v1/projects', optionsObj);
+      if (response.status !== 201) {
+        throw Error(`${response.status}`);
       }
-    }  
+      const id = await response.json();
+      const project = { ...id, project_name: projectName }
+      populateProject(project);
+      $('.project-input').val('');
+      return id;
+    } catch (error) {
+      throw Error(`Your request failed. (error: ${error.message})`);
+    }
   }
+  alert("Please provide a unique name");
+}
 
-  function lockColor(circle, color) {
-    circle.toggleClass('is-stored');
-  }
+// function putProjectIdOnOption(response, projectName) {
+//   $('select').append(`<option selected="selected" value=${response.id}>${projectName}</option>`);
+//   putProjectInContainer(projectName);
+// }
 
-  $('.lock-icon').on('click', (event) => {
-    const color = $(event.target).prev().text();
-    lockColor($(event.target).parent(), color);
+// function putProjectInContainer(projectName) {
+//   $('.project-cards-container').prepend(`
+//       <div class="project">
+//       <h4>${projectName}</h4>
+//       </div><hr>
+//       `);
+// }
+
+const savePalette = async (event) => {
+  event.preventDefault();
+  const paletteName = $('.palette-input').val();
+  const projectNumber = $('#project-select option:selected').val();
+  const colorOne = $('#one').text();
+  const colorTwo = $('#two').text();
+  const colorThree = $('#three').text();
+  const colorFour = $('#four').text();
+  const colorFive = $('#five').text();
+  const savedPalettes = await getPalettes();
+
+  const paletteExists = savedPalettes.some(palette => {
+    return palette.palette_name === paletteName;
   });
 
-  function makeRandomColors() {
-      var randomColor = "#000000".replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16); });
-      return randomColor;
-  }
-
-  function handleDiffPalClick(event) { 
-    event.preventDefault();
-    $('.circle').each(function () {
-      if($(this).hasClass('is-stored')){
-        return; //skips and goes to next circle
+  if (!paletteExists && paletteName.length) {
+    try {
+      const url = 'http://localhost:3000/api/v1/palettes'
+      const optionsObj = {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(
+          {
+            palette_name: paletteName,
+            project_id: projectNumber,
+            color_one: colorOne,
+            color_two: colorTwo,
+            color_three: colorThree,
+            color_four: colorFour,
+            color_five: colorFive
+          })
       }
-      const color = makeRandomColors();
-      $(this).css('background-color', color);
-      $(this).children('.color-name').text(color)
-    }); 
+      const paletteResponse = await fetch(url, optionsObj)
+      if (response.status !== 201) {
+        throw Error(`${response.status}`);
+      }
+      const id = await paletteResponse.json()
+
+      const palette = {
+        ...id,
+        palette_name: paletteName,
+        color_one: colorOne,
+        color_two: colorTwo,
+        color_three: colorThree,
+        color_four: colorFour,
+        color_five: colorFive,
+        project_id: projectNumber
+      }
+      populatePalette(palette);
+      $('.palette-input').val('');
+      return id;
+    } catch (error) {
+      $('.result').text(`Your request failed. (error: ${error.message})`);
+    }
   }
+  // alert("Please provide a unique name");
+}
 
-  $('.different-palette').on('click', handleDiffPalClick);
+$('#palette-save-button').on('click', savePalette);
+$('#project-save-button').on('click', saveProject);
+$('.lock-icon').on('click', lockColor);
+$('.different-palette').click(handleDiffPalClick);
 
-  // $('#project-save-button').on('click',function(event){
-  //   event.preventDefault();
-  //   const projectName = $('.project-input').val();
-
-  //   $('select').append(`<option >${projectName}</option>`);
-    // $('.project-cards-container').prepend(`
-    //   <div class="project">
-    //   <h4>${projectName}</h4>
-    //   </div><hr>
-    //   `);
-  // });
-
-  function putProjectIdOnOption (response, projectName){
-    $('select').append(`<option selected="selected" value=${response.id}>${projectName}</option>`);
-    putProjectInContainer(projectName);
-    console.log('in option','hope');
-    
-  }
-
-  function putProjectInContainer (projectName) {
-    $('.project-cards-container').prepend(`
-      <div class="project">
-      <h4>${projectName}</h4>
-      </div><hr>
-      `);
-      console.log('incontainer','howdy');
-      
-  }
-
-  $('button[type="submit"]').click(function () {
-  //   // Before the request starts, show the 'Loading message...'
-  //   $('.result').text('File is being uploaded...');
-    event.preventDefault();
-    const projectName = $('.project-input').val();
-    const url = 'http://localhost:3000/api/v1/projects'
-    const optionsObj = {
-      method: 'POST',
-      headers: {"Content-Type": "application/json"},  
-      body: JSON.stringify({ project_name: projectName })
-    };
-    
-    return fetch(url, optionsObj)
-      .then(projectsResponse => {
-        return projectsResponse.json();
-      })
-      .then((projectsResponse)=>{
-        putProjectIdOnOption(projectsResponse, projectName);
-      })
-      .catch(error => {
-        $('.result').text('Whoops! There was an error in the request.');
-      });
-  });
-
-  $('#palette-save-button[type="submit"]').on('click', function (event) {
-    event.preventDefault();
-    const paletteName = $('.palette-input').val();
-    const projectNumber = $('#project-select option:selected');
-    console.log(projectNumber);
-    
-    const colorOne = $('#one').next().text();
-    const colorTwo = $('#two').next().text();
-    const colorThree = $('#three').next().text();
-    const colorFour = $('#four').next().text();
-    const colorFive = $('#five').next().text();
-    const url = 'http://localhost:3000/api/v1/palettes'
-    const optionsObj = {
-      method: 'POST',
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(
-        { 
-          palette_name: paletteName,
-          projecte_id: projectNumber,
-          color_one: colorOne,
-          color_two: colorTwo,
-          color_three: colorThree,
-          color_four: colorFour,
-          color_five: colorFive
-         }
-      )
-    };
-    
-    return fetch(url, optionsObj)
-      .then(palettesResponse => {
-        return palettesResponse.json();
-      })
-      .catch(error => {
-        $('.result').text('Whoops! There was an error in the request.');
-      });
-    
-  });
-
-  
-  
-
+$(document).ready(async () => {
+  handleDiffPalClick()
+  await displayProjects();
+  await displayPalettes();
 });
- 
+
+
