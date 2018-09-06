@@ -1,11 +1,3 @@
-$(document).ready(async () => {
-  handleDiffPalClick()
-  await displayProjects();
-  await displayPalettes();
-});
-
-$('.different-palette').on('click', handleDiffPalClick);
-
 
 const getPalettes = async () => {
   try {
@@ -72,37 +64,25 @@ function populatePalette(palette) {
 function lockColor(event) {
   const circle = $(event.target).parent();
   circle.toggleClass('is-stored');
-
   circle.hasClass('is-stored')
     ? (event.target.src = './images/locked.svg')
     : (event.target.src = './images/unlocked.svg');
 }
 
-
-$('.lock-icon').on('click', lockColor)
-
-// $('.lock-icon').on('click', (event) => {
-//   const color = $(event.target).prev().text();
-//   const circle = $(event.target).parent()
-//   lockColor(circle, color);
-// });
-
 function makeRandomColors() {
-  var randomColor = "#000000".replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16); });
+  const randomColor = "#000000".replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16); });
   return randomColor;
 }
 
-function handleDiffPalClick() {
-  $('.circle').each(function () {
-    if ($(this).hasClass('is-stored')) {
-      return; //skips and goes to next circle
+const handleDiffPalClick = () => {
+  $('.circle').each((index, singleCircle) => {
+    const haveLockClass = singleCircle.classList.contains('is-stored');
+    if (!haveLockClass) {
+      $(singleCircle).css('background-color', makeRandomColors());
+      $(singleCircle).children('.color-name').text(makeRandomColors())
     }
-    const color = makeRandomColors();
-    $(this).css('background-color', color);
-    $(this).children('.color-name').text(color)
   });
 }
-
 
 // $('#project-save-button').on('click',function(event){
 //   event.preventDefault();
@@ -119,7 +99,6 @@ function handleDiffPalClick() {
 function putProjectIdOnOption(response, projectName) {
   $('select').append(`<option selected="selected" value=${response.id}>${projectName}</option>`);
   putProjectInContainer(projectName);
-  console.log('in option', 'hope');
 
 }
 
@@ -129,8 +108,6 @@ function putProjectInContainer(projectName) {
       <h4>${projectName}</h4>
       </div><hr>
       `);
-  console.log('incontainer', 'howdy');
-
 }
 
 $('button[type="submit"]').click(function () {
@@ -161,7 +138,7 @@ $('#palette-save-button[type="submit"]').on('click', function (event) {
   event.preventDefault();
   const paletteName = $('.palette-input').val();
   const projectNumber = $('#project-select option:selected');
-  console.log(projectNumber);
+ 
 
   const colorOne = $('#one').next().text();
   const colorTwo = $('#two').next().text();
@@ -194,4 +171,14 @@ $('#palette-save-button[type="submit"]').on('click', function (event) {
     });
 
 });
+
+$('.lock-icon').on('click', lockColor)
+$('.different-palette').click(handleDiffPalClick);
+
+$(document).ready(async () => {
+  handleDiffPalClick()
+  await displayProjects();
+  await displayPalettes();
+});
+
 
