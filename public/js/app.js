@@ -1,7 +1,11 @@
 $(document).ready(async () => {
+  handleDiffPalClick()
   await displayProjects();
   await displayPalettes();
 });
+
+$('.different-palette').on('click', handleDiffPalClick);
+
 
 const getPalettes = async () => {
   try {
@@ -53,7 +57,6 @@ function populateProject(project) {
 }
 
 function populatePalette(palette) {
-  console.log('palette', $(`#project${palette.project_id}`))
   $(`#project${palette.project_id}`).append(`
     <div class="palette-in-project">
       <p class="palette-name-in-project">${palette.palette_name}</p>
@@ -66,22 +69,30 @@ function populatePalette(palette) {
   `);
 };
 
-function lockColor(circle, color) {
+function lockColor(event) {
+  const circle = $(event.target).parent();
   circle.toggleClass('is-stored');
+
+  circle.hasClass('is-stored')
+    ? (event.target.src = './images/locked.svg')
+    : (event.target.src = './images/unlocked.svg');
 }
 
-$('.lock-icon').on('click', (event) => {
-  const color = $(event.target).prev().text();
-  lockColor($(event.target).parent(), color);
-});
+
+$('.lock-icon').on('click', lockColor)
+
+// $('.lock-icon').on('click', (event) => {
+//   const color = $(event.target).prev().text();
+//   const circle = $(event.target).parent()
+//   lockColor(circle, color);
+// });
 
 function makeRandomColors() {
   var randomColor = "#000000".replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16); });
   return randomColor;
 }
 
-function handleDiffPalClick(event) {
-  event.preventDefault();
+function handleDiffPalClick() {
   $('.circle').each(function () {
     if ($(this).hasClass('is-stored')) {
       return; //skips and goes to next circle
@@ -92,7 +103,6 @@ function handleDiffPalClick(event) {
   });
 }
 
-$('.different-palette').on('click', handleDiffPalClick);
 
 // $('#project-save-button').on('click',function(event){
 //   event.preventDefault();
