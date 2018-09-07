@@ -12,9 +12,9 @@ app.locals.title = 'Palette Picker'; //data for dev prior to server creation
 
 app.use(express.static('public'));//point express to the public folder for the app
 
-app.get('/', (request, response) => {
-  // response.status(200).sendFile('public/index.html', { root: __dirname });
-});
+// app.get('/', (request, response) => {
+//   response.status(200).sendFile('public/index.html', { root: __dirname });
+// }); //line 13 makes this redundant
 
 app.get('/api/v1/projects', (request, response) => { //retrieve project from database endpoint
   database('projects').select()
