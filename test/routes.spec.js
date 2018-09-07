@@ -9,7 +9,7 @@ const should = chai.should();
 
 chai.use(chaiHttp);
 
-describe('Test client endpoint ' / ', () => {
+describe("Test client endpoint ' / '", () => {
   it('base route should return html ', (done) => {
     chai.request(server)
     .get('/')
@@ -20,7 +20,7 @@ describe('Test client endpoint ' / ', () => {
       done();
     })
   });
-  it('should ', () => {
+  it('should ', (done) => {
     chai.request(server)
     .get('/sad')  //sad path which does not exist
     .end( (error, response)=>{
