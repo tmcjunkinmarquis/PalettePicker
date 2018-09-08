@@ -58,4 +58,33 @@ describe("API routes  ", () => {
     });
   });
 
+  describe('GET /api/v1/palettes', () => {
+    it('should return an array of all palettes, each with the correct properties', (done) => {
+      chai.request(server)
+        .get('/api/v1/palettes')
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.should.be.a('array');
+          response.body[0].should.have.property('id');
+          response.body[0].id.should.equal(1);
+          response.body[0].should.have.property('palette_name');
+          response.body[0].palette_name.should.equal('Pretty');
+          response.body[0].should.have.property('project_id');
+          response.body[0].project_id.should.equal(1);
+          response.body[0].should.have.property('color_one');
+          response.body[0].color_one.should.equal('#f89d64')
+          response.body[0].should.have.property('color_two');
+          response.body[0].color_two.should.equal('#60ec83')
+          response.body[0].should.have.property('color_three');
+          response.body[0].color_three.should.equal('#31782c')
+          response.body[0].should.have.property('color_four');
+          response.body[0].color_four.should.equal('#50efc0')
+          response.body[0].should.have.property('color_five');
+          response.body[0].color_five.should.equal('#418282');
+          done();
+        })
+    });
+  });
+
 });
