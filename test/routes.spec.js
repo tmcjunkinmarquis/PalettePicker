@@ -42,7 +42,7 @@ describe("API routes  ", () => {
   });
 
   describe('GET /api/v1/projects', () => {
-    it.only('should  ', () => {
+    it('should return an array of all projects, each with the correct properties ', (done) => {
       chai.request(server)
         .get('/api/v1/projects/')
         .end((error, response) => {
@@ -51,9 +51,10 @@ describe("API routes  ", () => {
           response.body.should.be.a('array');
           response.body[0].should.have.property('id');
           response.body[0].id.should.equal(1);
-          response.body[0].should.have.property('project_name')
+          response.body[0].should.have.property('project_name');
+          response.body[0].project_name.should.equal('First Project');
+          done();
         })
-
     });
   });
 
