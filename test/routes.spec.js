@@ -87,4 +87,22 @@ describe("API routes  ", () => {
     });
   });
 
+  describe('POST /api/v1/projects', () => {
+    it('should return an object with an id property', (done) => {
+      chai.request(server)
+        .post('/api/v1/projects')
+        .send({ project_name: 'Theresas Project' })
+        .end((error, response) => {
+          response.should.have.status(201);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.should.have.property('id');
+          response.body.id.should.equal(2);
+          done();
+        });
+
+    });
+
+  });
+
 });

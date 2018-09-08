@@ -39,14 +39,13 @@ app.get('/api/v1/palettes', (request, response) => {
 app.post('/api/v1/projects', (request, response) => {
   //post projects to database endpoint
   const project = request.body;
-
   if (!project.project_name) {
     return response.status(422).send({ Error: 'Missing project name' });
   }
   database('projects')
     .insert(project, 'id')
-    .then(project => {
-      response.status(201).json({ id: project[0] });
+    .then(id => {
+      response.status(201).json({ id: id[0] });
     })
     .catch(error => {
       response.status(500).json({ error });
