@@ -102,6 +102,18 @@ describe("API routes  ", () => {
         });
 
     });
+    it('should return a status code of 422 if the user enters an invalid project name', (done) => {
+      chai.request(server)
+        .post('/api/v1/projects')
+        .send({ project_name: '' })
+        .end((error, response) => {
+          response.should.have.status(422);
+          response.body.should.be.a('object');
+          response.body.should.have.property('Error');
+          response.body.Error.should.equal('Missing project name');
+          done();
+        })
+    });
 
   });
 
