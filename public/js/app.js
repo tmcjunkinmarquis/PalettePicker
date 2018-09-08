@@ -181,14 +181,12 @@ const savePalette = async event => {
         body: JSON.stringify(palette)
       };
       const paletteResponse = await fetch(url, optionsObj);
-      console.log(paletteResponse);
-
       if (paletteResponse.status !== 201) {
         throw Error(`${response.status}`);
       }
       const id = await paletteResponse.json();
 
-      populatePalette({ id, ...palette });
+      populatePalette({ ...id, ...palette });
       $('.palette-input').val('');
       return id;
     } catch (error) {

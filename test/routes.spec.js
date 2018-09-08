@@ -155,50 +155,48 @@ describe("API routes  ", () => {
         .end((error, response) => {
           response.should.have.status(422);
           response.should.be.json
-
           response.body.should.be.a('string')
           done();
         })
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // it('returns status 422 if name is missing', done => {
-    //   chai
-    //     .request(server)
-    //     .post('/api/v1/palettes')
-    //     .send({})
-    //     .end((error, response) => {
-    //       response.should.have.status(422); //BUILD OUT MORE
-    //       done();
-    //     });
-    // });
   });
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // describe('DELETE /api/v1/palettes:id', () => {
   //   it('deletes a palette from the database', done => {
