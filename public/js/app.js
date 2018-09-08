@@ -1,7 +1,8 @@
-
 const getPalettes = async () => {
   try {
-    const palettesResponse = await fetch('http://localhost:3000/api/v1/palettes');
+    const palettesResponse = await fetch(
+      'http://localhost:3000/api/v1/palettes'
+    );
     if (palettesResponse.status === 200) {
       return await palettesResponse.json();
     } else {
@@ -10,11 +11,13 @@ const getPalettes = async () => {
   } catch (error) {
     throw Error(`Your request failed. (error: ${error.message})`);
   }
-}
+};
 
 const getProjects = async () => {
   try {
-    const projectsResponse = await fetch('http://localhost:3000/api/v1/projects')
+    const projectsResponse = await fetch(
+      'http://localhost:3000/api/v1/projects'
+    );
     if (projectsResponse.status === 200) {
       return await projectsResponse.json();
     } else {
@@ -23,21 +26,21 @@ const getProjects = async () => {
   } catch (error) {
     throw Error(`Your request failed. (error: ${error.message})`);
   }
-}
+};
 
 const displayProjects = async () => {
   let projectsData = await getProjects();
   projectsData.forEach(project => {
     populateProject(project);
   });
-}
+};
 
 const displayPalettes = async () => {
   let palettesData = await getPalettes();
   palettesData.forEach(palette => {
     populatePalette(palette);
   });
-}
+};
 
 function populateProject(project) {
   $('.saved-projects').prepend(`
@@ -45,21 +48,36 @@ function populateProject(project) {
         <h4 class='project-name'>${project.project_name}</h4>
       </div><hr>
       `);
-  $('select').prepend(`<option selected="selected" value=${project.id}>${project.project_name}</option>`)
+  $('select').prepend(
+    `<option selected="selected" value=${project.id}>${
+    project.project_name
+    }</option>`
+  );
 }
 
 function populatePalette(palette) {
   $(`#project${palette.project_id}`).append(`
-    <div class="palette-in-project">
+    <div class="palette-in-project" id=${palette.id}>
       <p class="palette-name-in-project">${palette.palette_name}</p>
-      <div class="circle-for-project" id="one-for-project" style='background-color:${palette.color_one}'></div>
-      <div class="circle-for-project" id="two-for-project" style='background-color:${palette.color_two}'></div>
-      <div class="circle-for-project" id="three-for-project" style='background-color:${palette.color_three}'></div>
-      <div class="circle-for-project" id="four-for-project" style='background-color:${palette.color_four}'></div>
-      <div class="circle-for-project" id="five-for-project" style='background-color:${palette.color_five}'></div>
+      <div class="circle-for-project" id="one-for-project" style='background-color:${
+    palette.color_one
+    }'></div>
+      <div class="circle-for-project" id="two-for-project" style='background-color:${
+    palette.color_two
+    }'></div>
+      <div class="circle-for-project" id="three-for-project" style='background-color:${
+    palette.color_three
+    }'></div>
+      <div class="circle-for-project" id="four-for-project" style='background-color:${
+    palette.color_four
+    }'></div>
+      <div class="circle-for-project" id="five-for-project" style='background-color:${
+    palette.color_five
+    }'></div>
+      <img class="palette-delete" src="./images/trashcan.svg" alt="trashcan">
     </div>
   `);
-};
+}
 
 function lockColor(event) {
   const circle = $(event.target).parent();
@@ -70,21 +88,23 @@ function lockColor(event) {
 }
 
 function makeRandomColors() {
-  const randomColor = "#000000".replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16); });
-  return randomColor;
+  return '#000000'.replace(/0/g, () => (~~(Math.random() * 16)).toString(16));
 }
 
 const handleDiffPalClick = () => {
   $('.circle').each((index, singleCircle) => {
-    const haveLockClass = singleCircle.classList.contains('is-stored');
-    if (!haveLockClass) {
-      $(singleCircle).css('background-color', makeRandomColors());
-      $(singleCircle).children('.color-name').text(makeRandomColors())
+    const haveIsStoredClass = singleCircle.classList.contains('is-stored');
+    const color = makeRandomColors();
+    if (!haveIsStoredClass) {
+      $(singleCircle).css('background-color', color);
+      $(singleCircle)
+        .children('.color-name')
+        .text(color);
     }
   });
-}
+};
 
-const saveProject = async (event) => {
+const saveProject = async event => {
   event.preventDefault();
   const projectName = $('.project-input').val();
   const savedProjects = await getProjects();
@@ -104,39 +124,48 @@ const saveProject = async (event) => {
         throw Error(`${response.status}`);
       }
       const id = await response.json();
-      const project = { ...id, project_name: projectName }
+      const project = { ...id, project_name: projectName };
       populateProject(project);
       $('.project-input').val('');
       return id;
     } catch (error) {
-      throw Error(`Your request failed. (error: ${error.message})`);
+      $('.result').text(`Your request failed. (error: ${error.message})`);
     }
+  } else {
+    alert('Please provide a unique name');
   }
-  alert("Please provide a unique name");
-}
+};
 
-// function putProjectIdOnOption(response, projectName) {
-//   $('select').append(`<option selected="selected" value=${response.id}>${projectName}</option>`);
-//   putProjectInContainer(projectName);
-// }
-
-// function putProjectInContainer(projectName) {
-//   $('.project-cards-container').prepend(`
-//       <div class="project">
-//       <h4>${projectName}</h4>
-//       </div><hr>
-//       `);
-// }
-
-const savePalette = async (event) => {
+const savePalette = async event => {
   event.preventDefault();
   const paletteName = $('.palette-input').val();
   const projectNumber = $('#project-select option:selected').val();
-  const colorOne = $('#one').text();
-  const colorTwo = $('#two').text();
-  const colorThree = $('#three').text();
-  const colorFour = $('#four').text();
-  const colorFive = $('#five').text();
+  const projectNumberInt = parseInt(projectNumber);
+  const colorOne = $('#one')
+    .text()
+    .trim();
+  const colorTwo = $('#two')
+    .text()
+    .trim();
+  const colorThree = $('#three')
+    .text()
+    .trim();
+  const colorFour = $('#four')
+    .text()
+    .trim();
+  const colorFive = $('#five')
+    .text()
+    .trim();
+  const palette = {
+    palette_name: paletteName,
+    color_one: colorOne,
+    color_two: colorTwo,
+    color_three: colorThree,
+    color_four: colorFour,
+    color_five: colorFive,
+    project_id: projectNumber
+  };
+
   const savedPalettes = await getPalettes();
 
   const paletteExists = savedPalettes.some(palette => {
@@ -145,57 +174,79 @@ const savePalette = async (event) => {
 
   if (!paletteExists && paletteName.length) {
     try {
-      const url = 'http://localhost:3000/api/v1/palettes'
+      const url = 'http://localhost:3000/api/v1/palettes';
       const optionsObj = {
         method: 'POST',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-          {
-            palette_name: paletteName,
-            project_id: projectNumber,
-            color_one: colorOne,
-            color_two: colorTwo,
-            color_three: colorThree,
-            color_four: colorFour,
-            color_five: colorFive
-          })
-      }
-      const paletteResponse = await fetch(url, optionsObj)
-      if (response.status !== 201) {
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(palette)
+      };
+      const paletteResponse = await fetch(url, optionsObj);
+
+      if (paletteResponse.status !== 201) {
         throw Error(`${response.status}`);
       }
-      const id = await paletteResponse.json()
+      const id = await paletteResponse.json();
 
-      const palette = {
-        ...id,
-        palette_name: paletteName,
-        color_one: colorOne,
-        color_two: colorTwo,
-        color_three: colorThree,
-        color_four: colorFour,
-        color_five: colorFive,
-        project_id: projectNumber
-      }
-      populatePalette(palette);
+      populatePalette({ id, ...palette });
       $('.palette-input').val('');
       return id;
     } catch (error) {
       $('.result').text(`Your request failed. (error: ${error.message})`);
     }
+  } else {
+    alert('Please provide a unique name');
   }
-  // alert("Please provide a unique name");
-}
+};
+
+const deletePalette = async () => {
+  const palette = event.path[1];
+  try {
+    const options = {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' }
+    };
+    const response = await fetch('/api/v1/palettes/' + palette.id, options);
+    if (!response.ok) {
+      throw new Error(`${response.status}`);
+    }
+    palette.remove();
+  } catch (error) {
+    throw new Error(`Network request failed. (error: ${error.message})`);
+  }
+};
+
+const convertToHex = rgb => {
+  rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+  function hex(x) {
+    return ('0' + parseInt(x).toString(16)).slice(-2);
+  }
+  return '#' + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+};
+
+const littlePaletteToBigPalette = () => {
+  const children = event.path[1].children;
+  const colorArray = Array.from(children).filter(element => {
+    return element.className === 'circle-for-project';
+  });
+  const hexColorArray = colorArray.map(color => {
+    return convertToHex(color.style.backgroundColor);
+  });
+  $('#one').css('background-color', hexColorArray[0]);
+  $('#two').css('background-color', hexColorArray[1]);
+  $('#three').css('background-color', hexColorArray[2]);
+  $('#four').css('background-color', hexColorArray[3]);
+  $('#five').css('background-color', hexColorArray[4]);
+};
 
 $('#palette-save-button').on('click', savePalette);
 $('#project-save-button').on('click', saveProject);
 $('.lock-icon').on('click', lockColor);
-$('.different-palette').click(handleDiffPalClick);
+$('.different-palette').on('click', handleDiffPalClick);
+$('.saved-projects').on('click', '.palette-delete', deletePalette);
+$('.saved-projects').on('click', '.palette-in-project', littlePaletteToBigPalette);
 
 $(document).ready(async () => {
-  handleDiffPalClick()
+  handleDiffPalClick();
   await displayProjects();
   await displayPalettes();
 });
-
-
-
