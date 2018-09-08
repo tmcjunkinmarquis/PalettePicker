@@ -117,4 +117,28 @@ describe("API routes  ", () => {
 
   });
 
+  describe('POST api/v1/palettes', () => {
+    it('should return', (done) => {
+      chai.request(server)
+        .post('/api/v1/palettes')
+        .send({
+          palette_name: 'Theresas palette',
+          color_one: '#ff214e',
+          color_two: '#6adaee',
+          color_three: '#87090b',
+          color_four: '#70edc3',
+          color_five: '#da2f1f',
+          project_id: 1
+        })
+        .end((error, response) => {
+          response.should.have.status(201);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.should.have.property('id')
+          response.body.id.should.equal(3);
+          done();
+        })
+    });
+  });
+
 });

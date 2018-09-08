@@ -55,7 +55,8 @@ app.post('/api/v1/projects', (request, response) => {
 app.post('/api/v1/palettes', (request, response) => {
   //post palettes to database endpoint
   const palette = request.body;
-
+  console.log(palette);
+  
   for (let requiredParameter of [
     'palette_name',
     'project_id',
@@ -76,8 +77,8 @@ app.post('/api/v1/palettes', (request, response) => {
 
   database('palettes')
     .insert(palette, 'id')
-    .then(palette => {
-      response.status(201).json({ id: palette[0] });
+    .then(id => {
+      response.status(201).json({ id: id[0] });
     })
     .catch(error => {
       response.status(500).json({ error });
