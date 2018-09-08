@@ -105,8 +105,6 @@ app.post('/api/v1/palettes', (request, response) => {
 
 app.delete('/api/v1/palettes/:id', (request, response) => {
   const { id } = request.params;
-  console.log('server id:', id);
-
   database('palettes')
     .where('id', id)
     .del()
