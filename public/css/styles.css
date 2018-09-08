@@ -1,11 +1,19 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #ddc4aa;
+}
+
 .ui-container {
-  background-color: #DDC4AA;
+  background-color: #ddc4aa;
   background: radial-gradient(#ddc4aa, #f1e5d9);
 }
 
 .logo {
   text-align: center;
-  color: #F9F2ED;
+  /* color: #f9f2ed; */
   font-size: 3em;
 }
 
@@ -14,15 +22,25 @@ h3 {
 }
 
 .create-project {
-  color: #f4c781;
-  background-color: #F9F2ED;
+  /* color: #f4c781; */
+  background-color: #f9f2ed;
   text-align: center;
+  padding-bottom: 20px;
+}
+
+.project-input {
+  display: inline-block;
+}
+
+.project-button {
+  display: inline-block;
 }
 
 .add-palette {
-  color: #f4c781;
-  background-color: #F9F2ED;
+  /* color: #f4c781; */
+  background-color: #f9f2ed;
   text-align: center;
+  padding-bottom: 20px;
 }
 
 .sample-palette {
@@ -30,12 +48,13 @@ h3 {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: flex-start;
+  margin: 10px 0 10px;
 }
 
 .lock-icon {
-  margin-top: 1vh;
-  height: 4vh;
-  width: 4vh;
+  margin-top: 5px;
+  height: 30px;
+  width: 30px;
 }
 
 #one {
@@ -44,7 +63,7 @@ h3 {
   border: 2px solid lightgray;
   -moz-border-radius: 50px;
   -webkit-border-radius: 50px;
-  border-radius: 50px;  
+  border-radius: 50px;
 }
 
 #two {
@@ -54,7 +73,6 @@ h3 {
   -moz-border-radius: 50px;
   -webkit-border-radius: 50px;
   border-radius: 50px;
-  
 }
 
 #three {
@@ -64,7 +82,6 @@ h3 {
   -moz-border-radius: 50px;
   -webkit-border-radius: 50px;
   border-radius: 50px;
-  
 }
 
 #four {
@@ -74,7 +91,6 @@ h3 {
   -moz-border-radius: 50px;
   -webkit-border-radius: 50px;
   border-radius: 50px;
- 
 }
 
 #five {
@@ -84,18 +100,17 @@ h3 {
   -moz-border-radius: 50px;
   -webkit-border-radius: 50px;
   border-radius: 50px;
- 
 }
 
 .palette-in-project {
-  font-size: .8em;
-  color: #DDC4AA;
+  font-size: 0.8em;
+  /* color: #ddc4aa; */
 }
 
 #one-for-project {
   width: 14px;
   height: 14px;
-  border: .5px solid lightgray;
+  border: 0.5px solid lightgray;
   -moz-border-radius: 7px;
   -webkit-border-radius: 7px;
   border-radius: 7px;
@@ -113,7 +128,7 @@ h3 {
 #three-for-project {
   width: 14px;
   height: 14px;
-  border: .5px solid lightgray;
+  border: 0.5px solid lightgray;
   -moz-border-radius: 7px;
   -webkit-border-radius: 7px;
   border-radius: 7px;
@@ -122,7 +137,7 @@ h3 {
 #four-for-project {
   width: 14px;
   height: 14px;
-  border: .5px solid lightgray;
+  border: 0.5px solid lightgray;
   -moz-border-radius: 7px;
   -webkit-border-radius: 7px;
   border-radius: 7px;
@@ -131,7 +146,7 @@ h3 {
 #five-for-project {
   width: 14px;
   height: 14px;
-  border: .5px solid lightgray;
+  border: 0.5px solid lightgray;
   -moz-border-radius: 7px;
   -webkit-border-radius: 7px;
   border-radius: 7px;
@@ -153,4 +168,30 @@ h3 {
   margin-left: 3px;
 }
 
+.palette-delete {
+  height: 20px;
+  margin-left: 10px;
+}
 
+.project-cards-container {
+  /* margin: 0 auto; */
+  /* width: 100%; */
+  /* text-align: center; */
+  display: flex;
+  align-items: center;
+
+  justify-content: space-around;
+}
+
+.saved-projects {
+  display: flex;
+  /* width: 100%; */
+  /* margin: 0 auto; */
+  /* flex-direction: row; */
+  justify-content: space-around;
+  align-items: center;
+}
+
+.project {
+  margin: 20px;
+}
