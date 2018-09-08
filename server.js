@@ -40,7 +40,7 @@ app.post('/api/v1/projects', (request, response) => {
   //post projects to database endpoint
   const project = request.body;
   if (!project.project_name) {
-    return response.status(422).send({ Error: 'Missing project name' });
+    return response.status(422).json({ Error: 'Missing project name' });
   }
   database('projects')
     .insert(project, 'id')
@@ -55,8 +55,7 @@ app.post('/api/v1/projects', (request, response) => {
 app.post('/api/v1/palettes', (request, response) => {
   //post palettes to database endpoint
   const palette = request.body;
-  console.log(palette);
-  
+
   for (let requiredParameter of [
     'palette_name',
     'project_id',
@@ -69,8 +68,8 @@ app.post('/api/v1/palettes', (request, response) => {
     if (!palette[requiredParameter]) {
       return response
         .status(422)
-        .send(
-          `Expected format: { palette_name: <String>, project_id: <Number>, color_one: <String>, color_two: <String>, color_three: <String>, color_four: <String>, color_five: <String>}. You're missing a "${requiredParameter}" property.`
+        .json(
+          `Expected format { palette_name: <String>, project_id: <Number>, color_one: <String>, color_two: <String>, color_three: <String>, color_four: <String>, color_five: <String>}. You're missing a "${requiredParameter}" property.`
         );
     }
   }

@@ -108,6 +108,7 @@ describe("API routes  ", () => {
         .send({ project_name: '' })
         .end((error, response) => {
           response.should.have.status(422);
+          response.should.be.json;
           response.body.should.be.a('object');
           response.body.should.have.property('Error');
           response.body.Error.should.equal('Missing project name');
@@ -118,7 +119,7 @@ describe("API routes  ", () => {
   });
 
   describe('POST api/v1/palettes', () => {
-    it('should return', (done) => {
+    it('should return status code 201 if post is successful', (done) => {
       chai.request(server)
         .post('/api/v1/palettes')
         .send({
@@ -139,6 +140,76 @@ describe("API routes  ", () => {
           done();
         })
     });
+
+    it('should return 422 if a reqired parameter key is missing', (done) => {
+      chai.request(server)
+        .post('/api/v1/palettes')
+        .send({
+          color_one: '#ff214e',
+          color_two: '#6adaee',
+          color_three: '#87090b',
+          color_four: '#70edc3',
+          color_five: '#da2f1f',
+          project_id: 1
+        })
+        .end((error, response) => {
+          response.should.have.status(422);
+          response.should.be.json
+
+          response.body.should.be.a('string')
+          done();
+        })
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // it('returns status 422 if name is missing', done => {
+    //   chai
+    //     .request(server)
+    //     .post('/api/v1/palettes')
+    //     .send({})
+    //     .end((error, response) => {
+    //       response.should.have.status(422); //BUILD OUT MORE
+    //       done();
+    //     });
+    // });
   });
 
+  // describe('DELETE /api/v1/palettes:id', () => {
+  //   it('deletes a palette from the database', done => {
+  //     chai
+  //       .request(server)
+  //       .delete('/api/v1/palettes/1')
+  //       .send({ id: 1 })
+  //       .end((err, response) => {
+  //         response.should.have.status(200);
+  //         done();
+  //       });
+  //   });
+  // });
 });
