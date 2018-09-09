@@ -93,7 +93,7 @@ app.delete('/api/v1/palettes/:id', (request, response) => {
       if (num_of_deleted_palettes > 0) {
         response.status(200).json({ Success: `Item ${id} deleted` });
       } else {
-        response.status(404).json({ Error: `Item ${id} not found` });
+        response.status(422).json({ Error: `Item ${id} not found` });
       }
     })
     .catch(error => {

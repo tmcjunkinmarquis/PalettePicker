@@ -178,7 +178,7 @@ describe("API routes  ", () => {
       chai.request(server)
         .delete('/api/v1/palettes/3')
         .end((error, response) => {
-          response.should.have.status(404);
+          response.should.have.status(422);
           response.should.be.json
           response.should.be.a('object');
           response.body.should.have.property('Error')
