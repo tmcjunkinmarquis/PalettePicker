@@ -84,32 +84,13 @@ app.post('/api/v1/palettes', (request, response) => {
     });
 });
 
-// app.get('/api/v1/palettes/:id', (request, response) => {
-//   //get dynamically defined palette from database
-//   database('palettes')
-//     .where('id', request.params.id)
-//     .select()
-//     .then(palettes => {
-//       if (palettes.length) {
-//         response.status(200).json(palettes);
-//       } else {
-//         response.status(404).json({
-//           error: `Could not find palette with id ${request.params.id}`
-//         });
-//       }
-//     })
-//     .catch(error => {
-//       response.status(500).json({ error });
-//     });
-// });
-
 app.delete('/api/v1/palettes/:id', (request, response) => {
   const { id } = request.params;
   database('palettes')
     .where('id', id)
     .del()
-    .then(deleted => {
-      if (deleted > 0) {
+    .then(num_of_deleted_palettes => {
+      if (num_of_deleted_palettes > 0) {
         response.status(200).json({ Success: `Item ${id} deleted` });
       } else {
         response.status(404).json({ Error: `Item ${id} not found` });

@@ -161,7 +161,35 @@ describe("API routes  ", () => {
     });
   });
 
-  
+  describe('DELETE /api/v1/palettes/:id', () => {
+    it('should return a status code of 200 if the delete is successful', (done) => {
+      chai.request(server)
+        .delete('/api/v1/palettes/2')
+        .end((error, response) => {
+          response.should.have.status(200)
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.should.have.property('Success')
+          response.body.Success.should.equal('Item 2 deleted')
+          done();
+        })
+    })
+    it('should return a status code of 404 if the resouce is not found', (done) => {
+      chai.request(server)
+        .delete('/api/v1/palettes/3')
+        .end((error, response) => {
+          response.should.have.status(404);
+          response.should.be.json
+          response.should.be.a('object');
+          response.body.should.have.property('Error')
+          response.body.Error.should.equal('Item 3 not found')
+          done()
+        })
+    });
+
+  });
+
+
 
 
 
