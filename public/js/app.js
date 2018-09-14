@@ -1,7 +1,7 @@
 const getPalettes = async () => {
   try {
     const palettesResponse = await fetch(
-      'http://localhost:3000/api/v1/palettes'
+      '/api/v1/palettes'
     );
     if (palettesResponse.status === 200) {
       return await palettesResponse.json();
@@ -16,7 +16,7 @@ const getPalettes = async () => {
 const getProjects = async () => {
   try {
     const projectsResponse = await fetch(
-      'http://localhost:3000/api/v1/projects'
+      '/api/v1/projects'
     );
     if (projectsResponse.status === 200) {
       return await projectsResponse.json();
@@ -174,7 +174,7 @@ const savePalette = async event => {
 
   if (!paletteExists && paletteName.length) {
     try {
-      const url = 'http://localhost:3000/api/v1/palettes';
+      const url = '/api/v1/palettes';
       const optionsObj = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
