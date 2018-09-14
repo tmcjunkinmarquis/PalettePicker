@@ -1,19 +1,18 @@
-const express = require('express'); //ES5 import express from node_modules, assign to express constant
-const app = express(); //create instance of express
-const environment = process.env.NODE_ENV || 'development'; //make the environment default to development except for hosting site
-const configuration = require('./knexfile')[environment]; //config file for knex access to database
-const database = require('knex')(configuration); //database for knex
-const bodyParser = require('body-parser'); //body-parser for posting
+const express = require('express'); 
+const app = express(); 
+const environment = process.env.NODE_ENV || 'development'; 
+const configuration = require('./knexfile')[environment]; 
+const database = require('knex')(configuration); 
+const bodyParser = require('body-parser'); 
 
 app.use(bodyParser.json());
 
-app.set('port', process.env.PORT || 3000); //default localhost to 3000 except for hosting
-app.locals.title = 'Palette Picker'; //data for dev prior to server creation
+app.set('port', process.env.PORT || 3000); 
+app.locals.title = 'Palette Picker'; 
 
-app.use(express.static('public')); //point express to the public folder for the app
+app.use(express.static('public')); 
 
 app.get('/api/v1/projects', (request, response) => {
-  //retrieve project from database endpoint
   database('projects')
     .select()
     .then(projects => {
@@ -25,7 +24,6 @@ app.get('/api/v1/projects', (request, response) => {
 });
 
 app.get('/api/v1/palettes', (request, response) => {
-  //retrieve palettes from database endpoint
   database('palettes')
     .select()
     .then(palettes => {
@@ -37,8 +35,8 @@ app.get('/api/v1/palettes', (request, response) => {
 });
 
 app.post('/api/v1/projects', (request, response) => {
-  //post projects to database endpoint
   const project = request.body;
+
   if (!project.project_name) {
     return response.status(422).json({ Error: 'Missing project name' });
   }
@@ -53,7 +51,6 @@ app.post('/api/v1/projects', (request, response) => {
 });
 
 app.post('/api/v1/palettes', (request, response) => {
-  //post palettes to database endpoint
   const palette = request.body;
 
   for (let requiredParameter of [
@@ -69,7 +66,14 @@ app.post('/api/v1/palettes', (request, response) => {
       return response
         .status(422)
         .json(
-          `Expected format { palette_name: <String>, project_id: <Number>, color_one: <String>, color_two: <String>, color_three: <String>, color_four: <String>, color_five: <String>}. You're missing a "${requiredParameter}" property.`
+          `Expected format { 
+            palette_name: <String>, 
+            project_id: <Number>, 
+            color_one: <String>, 
+            color_two: <String>, 
+            color_three: <String>, 
+            color_four: <String>, 
+            color_five: <String>}. You're missing a "${requiredParameter}" property.`
         );
     }
   }
@@ -86,6 +90,7 @@ app.post('/api/v1/palettes', (request, response) => {
 
 app.delete('/api/v1/palettes/:id', (request, response) => {
   const { id } = request.params;
+
   database('palettes')
     .where('id', id)
     .del()
